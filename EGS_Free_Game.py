@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import TimeoutException
 import account
 
@@ -10,7 +10,7 @@ options.set_preference('dom.webdriver.enabled', False)
 # options.headless = True   # Активация фонового режима
 
 # options.add_argument(
-#     'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+#     'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36  (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
 # )
 
 url = 'https://www.epicgames.com/store/ru'
@@ -19,12 +19,12 @@ print('Webdriver starting...')
 browser = webdriver.Firefox(options=options)
 
 
-def login_EGS():
-    '''Вход в аккаунт'''
+def login_egs():
+    """Вход в аккаунт"""
     browser.get(url_login)
     try:
         time_to_wait = WebDriverWait(browser, 20).until(
-            EC.element_to_be_clickable((By.ID, "email"))
+            ec.element_to_be_clickable((By.ID, "email"))
         )
     finally:
         email_input_field = browser.find_element_by_id('email')
@@ -35,7 +35,7 @@ def login_EGS():
         password_input_field.send_keys(account.password)
     try:
         time_to_wait = WebDriverWait(browser, 20).until(
-            EC.element_to_be_clickable((By.ID, "sign-in"))
+            ec.element_to_be_clickable((By.ID, "sign-in"))
         )
     finally:
         sign_in_button = browser.find_element_by_id('sign-in')
@@ -44,10 +44,10 @@ def login_EGS():
 
 
 def return_to_main_page():
-    ''' Возвращение на главную страницу'''
+    """ Возвращение на главную страницу"""
     try:
         time_to_wait = WebDriverWait(browser, 20).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "shieldLogo "))
+            ec.element_to_be_clickable((By.CLASS_NAME, "shieldLogo "))
         )
     finally:
         sign_in_button = browser.find_element_by_class_name('shieldLogo')
@@ -56,7 +56,7 @@ def return_to_main_page():
 
 
 def search_free_weekly():
-    '''Поиск еженедельной бесплатной игры'''
+    """Поиск еженедельной бесплатной игры"""
     free_weekly = browser.find_elements_by_class_name('css-1ihd7u3')
     print(free_weekly)
     browser.find_element_by_class_name('css-1ihd7u3').click()
@@ -64,10 +64,10 @@ def search_free_weekly():
 
 
 def claim_free_game():
-    ''' Забираем бесплатную игру '''
+    """ Забираем бесплатную игру """
     try:
         time_to_wait = WebDriverWait(browser, 20).until(
-            EC.element_to_be_clickable((By.XPATH,
+            ec.element_to_be_clickable((By.XPATH,
                                         "/html/body/div[1]/div/div[4]/main/div/div[3]/div[2]/div/div[2]/div[2]/div/div/div[3]/div/div/div/div[3]/div/div/button"))
         )
     except TimeoutException:
@@ -79,7 +79,7 @@ def claim_free_game():
     # версия 1
     try:
         time_to_wait = WebDriverWait(browser, 10).until(
-            EC.frame_to_be_available_and_switch_to_it('dieselReactWrapper')
+            ec.frame_to_be_available_and_switch_to_it('dieselReactWrapper')
         )
     finally:
         purchase_button = browser.find_element_by_xpath(
@@ -99,7 +99,7 @@ wait.until(EC.presence_of_element_located((By.ID, "SomeThing")))
 '''
 
 if __name__ == '__main__':
-    login_EGS()
+    login_egs()
     return_to_main_page()
     main_page = browser.page_source  # сохраняю html код в переменную
     search_free_weekly()
@@ -107,5 +107,3 @@ if __name__ == '__main__':
     # browser.get(url)
     # browser.quit()
 
-
-# конец
